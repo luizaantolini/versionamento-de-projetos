@@ -1,26 +1,26 @@
-// Importamos o Express para criar o servidor e a rota
+// importa o Express para criar o servidor e a rota
 import express, { type Request, type Response } from "express";
 
-// Criamos a aplicação do servidor
+// aplicação do servidor
 const app = express();
 
-// Permitimos receber dados no formato JSON
+// dados no formato JSON
 app.use(express.json());
 
-// Porta do projeto 02
+// porta do projeto 02
 const PORT = 8082;
 
-// Rota responsável por somar três números
+// rota responsável por somar três números
 app.post("/soma", (req: Request, res: Response) => {
     // Recebemos os três números enviados pelo body
     const numero1 = req.body.numero1;
     const numero2 = req.body.numero2;
     const numero3 = req.body.numero3;
 
-    // Guardamos aqui os nomes dos campos que não estão corretos
+    // nomes dos campos que não estão corretos
     const camposComErro: string[] = [];
 
-    // O typeof verifica se o valor recebido é do tipo número
+    // o typeof verifica se o valor recebido é do tipo número
     if (typeof numero1 !== "number") {
         camposComErro.push("numero1");
     }
@@ -33,7 +33,7 @@ app.post("/soma", (req: Request, res: Response) => {
         camposComErro.push("numero3");
     }
 
-    // Se algum campo tiver problema, não fazemos a soma
+    // se algum campo tiver problema, não faz a soma
     if (camposComErro.length > 0) {
         return res.status(400).json({
             erro: "Os campos informados devem possuir valores numéricos.",
@@ -41,16 +41,16 @@ app.post("/soma", (req: Request, res: Response) => {
         });
     }
 
-    // Com todos os valores corretos, fazemos a soma
+    // com todos os valores corretos, faz a soma
     const resultado = numero1 + numero2 + numero3;
 
-    // Retornamos o resultado em JSON
+    // retorna o resultado em JSON
     return res.status(200).json({
         resultado: resultado,
     });
 });
 
-// Trata erros relacionados ao JSON enviado pelo cliente
+// trata erros relacionados ao JSON enviado pelo cliente
 app.use((error: unknown, req: Request, res: Response, next: unknown) => {
     if (error instanceof SyntaxError) {
         return res.status(400).json({
@@ -64,7 +64,7 @@ app.use((error: unknown, req: Request, res: Response, next: unknown) => {
     });
 });
 
-// Inicia o servidor
+// inicia o servidor
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
     console.log(`Acesse: http://localhost:${PORT}/soma`);
